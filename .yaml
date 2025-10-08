@@ -1,0 +1,44 @@
+name: Run Jest tests
+
+# event
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+# tasks
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: setup node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: latest
+
+      - name: install dependencies
+        run: npm ci
+
+      - name: run tests
+        run: npm test
+
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: setup SSH
+        uses: webfactory/ssh-agent@v5
+
+      - name: deploy to VPS 
+        run: ssh root@91.99.70.80 'echo "connected to VPS'  
