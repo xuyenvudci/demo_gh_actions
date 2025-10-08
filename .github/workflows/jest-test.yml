@@ -1,0 +1,30 @@
+name: Run Jest tests
+
+# event
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+# tasks
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: setup node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: latest
+
+      - name: install dependencies
+        run: npm ci
+
+      - name: run tests
+        run: npm test
